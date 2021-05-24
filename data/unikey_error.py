@@ -6,42 +6,6 @@ from collections import Counter
 import numpy as np
 import random
 
-input_train = []
-with open('./data_train_cau_giay.csv', encoding='utf8') as csv_file:
-    csv_reader = csv.reader(csv_file)
-    for row in csv_reader:
-        input_train.append(row[0].lower())
-
-def check_number_contain(s):
-    check = False if next((chr for chr in s if chr.isdigit()), None) else True
-    return check
-
-get_data = []
-for i in input_train:
-    get_data.append(i)
-
-# tách dạng split
-split_data = []
-for i in input_train:
-    split_data.append(i.split())
-
-
-data_text = []
-for i in split_data:
-    temp = []
-    for j in i:
-        if check_number_contain(j):
-            temp.append(j)
-    data_text.append(temp)
-
-sentense_corpus = []
-for i in data_text:
-    concat_data = ""
-    for j in i:
-        concat_data = concat_data + j + " "
-    sentense_corpus.append(concat_data)
-# print(sentense_corpus)
-
 source_digit = ['ạ', 'ả', 'ã', 'à', 'á', 'â', 'ậ', 'ẩ', 'ẫ', 'ầ', 'ấ', 'ă', 'ặ', 'ẳ', 'ẵ', 'ằ', 'ắ',
                 'ọ', 'ỏ', 'õ', 'ò', 'ó', 'ô', 'ộ', 'ổ', 'ỗ', 'ồ', 'ố', 'ơ', 'ợ', 'ở', 'ỡ', 'ờ', 'ớ',
                 'ẹ', 'ẻ', 'ẽ', 'è', 'é', 'ê', 'ệ', 'ể', 'ễ', 'ề', 'ế',
@@ -57,6 +21,54 @@ replace_digit = ['aj', 'ar', 'ax', 'af', 'as', 'aa', 'aaj', 'aar', 'aax', 'aaf',
                 'ij', 'ir', 'ix', 'if', 'is',
                 'yj', 'yr', 'yx', 'yf', 'ys',
                 'dd']
+
+input_train = []
+with open('./data_train_cau_giay.csv', encoding='utf8') as csv_file:
+    csv_reader = csv.reader(csv_file)
+    for row in csv_reader:
+        input_train.append(row[0].lower())
+
+def check_number_contain(s):
+    check = False if next((chr for chr in s if chr.isdigit()), None) else True
+    return check
+
+def get_data_input(input_train):
+    get_data = []
+    for i in input_train:
+        get_data.append(i)
+    return get_data
+
+# tách dạng split
+def split_data(input_train):
+    split_data = []
+    for i in input_train:
+        split_data.append(i.split())
+    return split_data
+
+split_data_train = split_data(input_train)
+
+def get_data_text(split_data):
+    data_text = []
+    for i in split_data:
+        temp = []
+        for j in i:
+            if check_number_contain(j):
+                temp.append(j)
+        data_text.append(temp)
+    return data_text
+
+data_text_train = get_data_text(split_data_train)
+
+def create_sentence_courpus(data_text_train):
+    sentense_corpus = []
+    for i in data_text_train:
+        concat_data = ""
+        for j in i:
+            concat_data = concat_data + j + " "
+        sentense_corpus.append(concat_data)
+    return sentense_corpus
+# print(sentense_corpus)
+sentence_corpus = create_sentence_courpus(data_text_train)
 
 def check_special_character(digit):
     check = True
@@ -95,7 +107,7 @@ def fake_sentense(text_test):
 # print(fake_sentense(text_test))
 
 total = []
-for i in sentense_corpus:
+for i in sentence_corpus:
     data_source = i
     sentense_set = []
     sentense_set.append(data_source)
@@ -135,8 +147,6 @@ for i in total:
 #     for j in range(len(i)):
 #         temp += i[j] + " "
 #     data_test.append(temp)
-
-
 
 train_dataset = open("unikey_error.txt", "a", encoding='utf8')
 for i in total_data:

@@ -105,7 +105,7 @@ for i in sentence_source:
 #     print(i)
 
 # Lấy data để train
-train_dataset = open("spelling_error.txt","a",encoding='utf8')
+train_dataset = open("random_spelling_error.txt","a",encoding='utf8')
 for i in range(len(sentence_destination)):
     for j in range(len(sentence_destination[i])):
         train_dataset.write(str(sentence_destination[i][j]))
